@@ -1,11 +1,11 @@
 galaxy_info:
-  role_name: vault
+  role_name: terraform
   author: Bradford Wagner
-  description: installs HashiCorp Vault (community or enterprise)
+  description: installs HashiCorp Terraform
   company: Blackrock Financial Management
   license: Apache-2.0
   min_ansible_version: 2.1
-  galaxy_tags: [vault, hashicorp]
+  galaxy_tags: [terraform, hashicorp]
 
 dependencies:
   - andrewrothstein.unarchivedeps

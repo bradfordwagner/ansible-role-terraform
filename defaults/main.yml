@@ -1,17 +1,13 @@
 ---
-# defaults file for vault
+# defaults file for terraform
 
-# bare Vault version, without any +ent suffix (see vault_type)
-# check https://releases.hashicorp.com/vault/index.json for newer releases
-vault_version: '2.0.3'
-
-# community|enterprise - enterprise appends +ent to vault_version everywhere
-# (download URL, checksum URL, install path)
-vault_type: community
+# Terraform version to install
+# check https://releases.hashicorp.com/terraform/index.json for newer releases
+terraform_version: '1.15.8'
 
 # system|local - drives the install dir, link dir, and become together
 # (see vars/main.yml). system installs under /usr/local with become; local
 # installs under {{ ansible_env.HOME }}/.local with no become.
-vault_scope: system
+terraform_scope: system
 
-vault_mirror: https://releases.hashicorp.com/vault
+terraform_mirror: https://releases.hashicorp.com/terraform

@@ -1,31 +1,29 @@
 ---
-# vars file for vault
+# vars file for terraform
 # internal computed/constant values - not meant to be overridden individually;
-# use vault_scope/vault_version/vault_type/vault_mirror in defaults/main.yml instead
+# use terraform_scope/terraform_version/terraform_mirror in defaults/main.yml instead
 
-vault_full_version: "{{ vault_version }}{{ '+ent' if vault_type == 'enterprise' else '' }}"
+terraform_os: '{{ ansible_system | lower }}'
 
-vault_os: '{{ ansible_system | lower }}'
-
-vault_arch_map:
+terraform_arch_map:
   x86_64: amd64
   aarch64: arm64
   arm64: arm64
-vault_arch: '{{ vault_arch_map[ansible_architecture] }}'
+terraform_arch: '{{ terraform_arch_map[ansible_architecture] }}'
 
-vault_archive: 'vault_{{ vault_full_version }}_{{ vault_os }}_{{ vault_arch }}.zip'
-vault_download_url: '{{ vault_mirror }}/{{ vault_full_version }}/{{ vault_archive }}'
+terraform_archive: 'terraform_{{ terraform_version }}_{{ terraform_os }}_{{ terraform_arch }}.zip'
+terraform_download_url: '{{ terraform_mirror }}/{{ terraform_version }}/{{ terraform_archive }}'
 
-vault_checksum_algo: sha256
-vault_checksum_file: 'vault_{{ vault_full_version }}_SHA256SUMS'
-vault_checksum_url: '{{ vault_mirror }}/{{ vault_full_version }}/{{ vault_checksum_file }}'
+terraform_checksum_algo: sha256
+terraform_checksum_file: 'terraform_{{ terraform_version }}_SHA256SUMS'
+terraform_checksum_url: '{{ terraform_mirror }}/{{ terraform_version }}/{{ terraform_checksum_file }}'
 
-vault_parent_install_dir: "{{ '/usr/local' if vault_scope == 'system' else ansible_env.HOME + '/.local' }}"
-vault_link_dir: "{{ '/usr/local/bin' if vault_scope == 'system' else ansible_env.HOME + '/.local/bin' }}"
-vault_become: '{{ vault_scope == "system" }}'
+terraform_parent_install_dir: "{{ '/usr/local' if terraform_scope == 'system' else ansible_env.HOME + '/.local' }}"
+terraform_link_dir: "{{ '/usr/local/bin' if terraform_scope == 'system' else ansible_env.HOME + '/.local/bin' }}"
+terraform_become: '{{ terraform_scope == "system" }}'
 
-vault_install_dir: '{{ vault_parent_install_dir }}/vault/{{ vault_full_version }}'
-vault_installed_exe: '{{ vault_install_dir }}/vault'
-vault_installed_link: '{{ vault_link_dir }}/vault'
+terraform_install_dir: '{{ terraform_parent_install_dir }}/terraform/{{ terraform_version }}'
+terraform_installed_exe: '{{ terraform_install_dir }}/terraform'
+terraform_installed_link: '{{ terraform_link_dir }}/terraform'
 
-vault_tmp_zip: '/tmp/{{ vault_archive }}'
+terraform_tmp_zip: '/tmp/{{ terraform_archive }}'
