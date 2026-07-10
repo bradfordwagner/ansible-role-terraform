@@ -1,0 +1,81 @@
+---
+# tasks file for vault
+- include_role:
+    name: andrewrothstein.unarchivedeps
+
+- name: check for {{ vault_installed_exe }}
+  stat:
+    path: '{{ vault_installed_exe }}'
+  changed_when: false
+  register: vault_binary
+
+- when: not vault_binary.stat.exists
+  block:
+    - name: get checksums={{ vault_checksum_url }}
+      uri:
+        url: '{{ vault_checksum_url }}'
+        return_content: yes
+      register: vault_checksum_response
+
+    - name: resolve checksum for {{ vault_archive }}
+      set_fact:
+        vault_checksum: "{{ vault_checksum_algo }}:{{ item.split()[0] }}"
+      loop: "{{ vault_checksum_response.content.split('\n') }}"
+      when: vault_archive in item
+
+    - name: download={{ vault_download_url }}, dest={{ vault_tmp_zip }}
+      become: '{{ vault_become }}'
+      become_user: root
+      become_method: sudo
+      get_url:
+        url: '{{ vault_download_url }}'
+        dest: '{{ vault_tmp_zip }}'
+        checksum: '{{ vault_checksum }}'
+        mode: '0644'
+
+    - name: mkdir={{ vault_install_dir }}
+      become: '{{ vault_become }}'
+      become_user: root
+      become_method: sudo
+      file:
+        path: '{{ vault_install_dir }}'
+        state: directory
+        mode: '0755'
+
+    - name: unarchive={{ vault_tmp_zip }}, dest={{ vault_install_dir }}
+      become: '{{ vault_become }}'
+      become_user: root
+      become_method: sudo
+      unarchive:
+        remote_src: true
+        src: '{{ vault_tmp_zip }}'
+        dest: '{{ vault_install_dir }}'
+        creates: '{{ vault_installed_exe }}'
+        mode: '0755'
+  always:
+    - name: rm {{ vault_tmp_zip }}
+      become: '{{ vault_become }}'
+      become_user: root
+      become_method: sudo
+      file:
+        path: '{{ vault_tmp_zip }}'
+        state: absent
+
+- name: mkdir={{ vault_link_dir }}
+  become: '{{ vault_become }}'
+  become_user: root
+  become_method: sudo
+  file:
+    path: '{{ vault_link_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: link {{ vault_installed_link }} to {{ vault_installed_exe }}
+  become: '{{ vault_become }}'
+  become_user: root
+  become_method: sudo
+  file:
+    src: '{{ vault_installed_exe }}'
+    dest: '{{ vault_installed_link }}'
+    state: link
+    force: true
