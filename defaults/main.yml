@@ -3,7 +3,7 @@
 
 # Terraform version to install
 # check https://releases.hashicorp.com/terraform/index.json for newer releases
-terraform_version: '1.15.9'
+terraform_version: '1.16.0'
 
 # system|local - drives the install dir, link dir, and become together
 # (see vars/main.yml). system installs under /usr/local with become; local

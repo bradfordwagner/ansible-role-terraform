@@ -5,7 +5,7 @@
 # overwrites the terraform symlink.
 #
 # terraform_version is pinned explicitly to match defaults/main.yml's current
-# default (1.15.9) - bump both together, see CLAUDE.md Upgrades.
+# default (1.16.0) - bump both together, see CLAUDE.md Upgrades.
 
 - name: terraform / system scope (role defaults, no overrides)
   hosts: localhost
@@ -15,17 +15,17 @@
     - include_tasks: tests/verify.yml
       vars:
         verify_scope: system
-        verify_version: '1.15.9'
+        verify_version: '1.16.0'
 
 - name: terraform / local scope
   hosts: localhost
   roles:
     - role: '{{ playbook_dir }}'
       vars:
-        terraform_version: '1.15.9'
+        terraform_version: '1.16.0'
         terraform_scope: local
   tasks:
     - include_tasks: tests/verify.yml
       vars:
         verify_scope: local
-        verify_version: '1.15.9'
+        verify_version: '1.16.0'
