@@ -8,7 +8,7 @@ terraform_version: '1.17.0'
 
 # system|local - drives the install dir, link dir, and become together
 # (see vars/main.yml). system installs under /usr/local with become; local
-# installs under {{ ansible_env.HOME }}/.local with no become.
+# installs under {{ ansible_facts.env.HOME }}/.local with no become.
 terraform_scope: system
 
 terraform_mirror: https://releases.hashicorp.com/terraform
