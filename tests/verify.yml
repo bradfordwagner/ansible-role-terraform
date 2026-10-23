@@ -4,8 +4,8 @@
 # just-completed role invocation without depending on role-internal var scope
 
 - set_fact:
-    verify_parent_install_dir: "{{ '/usr/local' if verify_scope == 'system' else ansible_env.HOME + '/.local' }}"
-    verify_link_dir: "{{ '/usr/local/bin' if verify_scope == 'system' else ansible_env.HOME + '/.local/bin' }}"
+    verify_parent_install_dir: "{{ '/usr/local' if verify_scope == 'system' else ansible_facts.env.HOME + '/.local' }}"
+    verify_link_dir: "{{ '/usr/local/bin' if verify_scope == 'system' else ansible_facts.env.HOME + '/.local/bin' }}"
 
 - set_fact:
     verify_install_dir: '{{ verify_parent_install_dir }}/terraform/{{ verify_version }}'
@@ -50,4 +50,4 @@
   when: verify_scope == 'local'
   assert:
     that:
-      - verify_link_stat.stat.pw_name == ansible_user_id
+      - verify_link_stat.stat.pw_name == ansible_facts.user_id

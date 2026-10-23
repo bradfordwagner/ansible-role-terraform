@@ -3,13 +3,13 @@
 # internal computed/constant values - not meant to be overridden individually;
 # use terraform_scope/terraform_version/terraform_mirror in defaults/main.yml instead
 
-terraform_os: '{{ ansible_system | lower }}'
+terraform_os: '{{ ansible_facts.system | lower }}'
 
 terraform_arch_map:
   x86_64: amd64
   aarch64: arm64
   arm64: arm64
-terraform_arch: '{{ terraform_arch_map[ansible_architecture] }}'
+terraform_arch: '{{ terraform_arch_map[ansible_facts.architecture] }}'
 
 terraform_archive: 'terraform_{{ terraform_version }}_{{ terraform_os }}_{{ terraform_arch }}.zip'
 terraform_download_url: '{{ terraform_mirror }}/{{ terraform_version }}/{{ terraform_archive }}'
@@ -18,8 +18,8 @@ terraform_checksum_algo: sha256
 terraform_checksum_file: 'terraform_{{ terraform_version }}_SHA256SUMS'
 terraform_checksum_url: '{{ terraform_mirror }}/{{ terraform_version }}/{{ terraform_checksum_file }}'
 
-terraform_parent_install_dir: "{{ '/usr/local' if terraform_scope == 'system' else ansible_env.HOME + '/.local' }}"
-terraform_link_dir: "{{ '/usr/local/bin' if terraform_scope == 'system' else ansible_env.HOME + '/.local/bin' }}"
+terraform_parent_install_dir: "{{ '/usr/local' if terraform_scope == 'system' else ansible_facts.env.HOME + '/.local' }}"
+terraform_link_dir: "{{ '/usr/local/bin' if terraform_scope == 'system' else ansible_facts.env.HOME + '/.local/bin' }}"
 terraform_become: '{{ terraform_scope == "system" }}'
 
 terraform_install_dir: '{{ terraform_parent_install_dir }}/terraform/{{ terraform_version }}'
