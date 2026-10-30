@@ -16,7 +16,7 @@
       vars:
         verify_scope: system
         # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$
-        verify_version: '1.17.0'
+        verify_version: '1.17.1'
 
 - name: terraform / local scope
   hosts: localhost
@@ -24,11 +24,11 @@
     - role: '{{ playbook_dir }}'
       vars:
         # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$
-        terraform_version: '1.17.0'
+        terraform_version: '1.17.1'
         terraform_scope: local
   tasks:
     - include_tasks: tests/verify.yml
       vars:
         verify_scope: local
         # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$
-        verify_version: '1.17.0'
+        verify_version: '1.17.1'
